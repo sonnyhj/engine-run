@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>엔진런 — 엔쇼에 진심인 사람들의 러닝</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;800;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+  :root{
+    --bg:#0a0a0a;
+    --surface:#141414;
+    --surface-2:#1c1c1c;
+    --border:#2a2a2a;
+    --text:#e8e8e8;
+    --text-dim:#888;
+    --accent:#ff5722;
+    --accent-glow:rgba(255,87,34,.15);
+    --lime:#c6ff00;
+    --lime-glow:rgba(198,255,0,.12);
+  }
+
+  html{scroll-behavior:smooth}
+
+  body{
+    font-family:'Noto Sans KR','Space Grotesk',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    overflow-x:hidden;
+  }
+
+  /* ── hero ── */
+  .hero{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    position:relative;
+    padding:60px 24px;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:'';
+    position:absolute;inset:0;
+    background:
+      radial-gradient(ellipse 600px 400px at 30% 20%,var(--accent-glow),transparent),
+      radial-gradient(ellipse 500px 350px at 70% 70%,var(--lime-glow),transparent);
+    pointer-events:none;
+  }
+  .hero-badge{
+    display:inline-block;
+    padding:6px 18px;
+    border:1px solid var(--accent);
+    border-radius:100px;
+    font-size:13px;
+    font-weight:600;
+    color:var(--accent);
+    letter-spacing:.5px;
+    margin-bottom:28px;
+    animation:fadeUp .8s ease both;
+  }
+  .hero h1{
+    font-family:'Space Grotesk','Noto Sans KR',sans-serif;
+    font-size:clamp(56px,10vw,96px);
+    font-weight:700;
+    letter-spacing:-3px;
+    line-height:1;
+    margin-bottom:16px;
+    animation:fadeUp .8s .15s ease both;
+  }
+  .hero h1 span{
+    background:linear-gradient(135deg,var(--accent),#ff9100);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+  }
+  .hero-sub{
+    font-size:18px;
+    color:var(--text-dim);
+    font-weight:300;
+    letter-spacing:1px;
+    margin-bottom:40px;
+    animation:fadeUp .8s .3s ease both;
+  }
+  .hero-meaning{
+    max-width:480px;
+    font-size:15px;
+    color:#aaa;
+    line-height:1.8;
+    animation:fadeUp .8s .45s ease both;
+    padding:20px 28px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;
+  }
+  .hero-meaning strong{color:var(--lime);font-weight:600}
+
+  .scroll-hint{
+    position:absolute;
+    bottom:32px;
+    left:50%;transform:translateX(-50%);
+    font-size:12px;color:var(--text-dim);
+    letter-spacing:2px;
+    animation:bounce 2s infinite;
+  }
+
+  /* ── sections ── */
+  section{padding:80px 24px}
+  .container{max-width:800px;margin:0 auto}
+
+  .section-label{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:12px;font-weight:700;
+    color:var(--accent);
+    letter-spacing:3px;
+    text-transform:uppercase;
+    margin-bottom:12px;
+  }
+  .section-label::before{
+    content:'';display:block;width:24px;height:2px;
+    background:var(--accent);
+  }
+  .section-title{
+    font-size:clamp(28px,5vw,40px);
+    font-weight:800;
+    letter-spacing:-1px;
+    margin-bottom:40px;
+    line-height:1.2;
+  }
+  .section-title em{
+    font-style:normal;
+    color:var(--lime);
+  }
+
+  /* ── schedule cards ── */
+  .schedule-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:16px;
+    margin-bottom:48px;
+  }
+  .schedule-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:28px 24px;
+    transition:border-color .3s,transform .3s;
+  }
+  .schedule-card:hover{
+    border-color:var(--accent);
+    transform:translateY(-4px);
+  }
+  .schedule-day{
+    font-size:13px;font-weight:700;
+    color:var(--accent);
+    letter-spacing:1px;
+    margin-bottom:4px;
+  }
+  .schedule-time{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:28px;font-weight:700;
+    margin-bottom:12px;
+    letter-spacing:-1px;
+  }
+  .schedule-desc{
+    font-size:14px;
+    color:var(--text-dim);
+    line-height:1.6;
+  }
+  .schedule-tag{
+    display:inline-block;
+    margin-top:12px;
+    padding:4px 10px;
+    border-radius:6px;
+    font-size:11px;font-weight:600;
+    background:var(--lime-glow);
+    color:var(--lime);
+    border:1px solid rgba(198,255,0,.2);
+  }
+
+  /* ── flow section ── */
+  .flow-list{
+    position:relative;
+    padding-left:32px;
+  }
+  .flow-list::before{
+    content:'';position:absolute;left:7px;top:8px;bottom:8px;
+    width:2px;background:var(--border);
+  }
+  .flow-item{
+    position:relative;
+    margin-bottom:32px;
+  }
+  .flow-item::before{
+    content:'';position:absolute;
+    left:-25px;top:8px;
+    width:12px;height:12px;
+    border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 12px var(--accent-glow);
+  }
+  .flow-item:nth-child(even)::before{background:var(--lime)}
+  .flow-time{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:13px;font-weight:600;
+    color:var(--accent);
+    margin-bottom:4px;
+  }
+  .flow-item:nth-child(even) .flow-time{color:var(--lime)}
+  .flow-title{
+    font-size:18px;font-weight:700;
+    margin-bottom:6px;
+  }
+  .flow-desc{
+    font-size:14px;color:var(--text-dim);
+    line-height:1.7;
+  }
+
+  /* ── month plan ── */
+  .month-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:12px;
+  }
+  .month-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:24px 20px;
+    text-align:center;
+    transition:border-color .3s,transform .3s;
+  }
+  .month-card:hover{
+    border-color:var(--lime);
+    transform:translateY(-3px);
+  }
+  .month-num{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:32px;font-weight:700;
+    color:var(--lime);
+    margin-bottom:4px;
+  }
+  .month-label{
+    font-size:11px;color:var(--text-dim);
+    letter-spacing:1px;font-weight:600;
+    margin-bottom:12px;
+  }
+  .month-theme{
+    font-size:15px;font-weight:700;
+    margin-bottom:8px;
+  }
+  .month-detail{
+    font-size:13px;color:var(--text-dim);
+    line-height:1.6;
+  }
+
+  /* ── rules ── */
+  .rules-list{
+    list-style:none;
+    counter-reset:rule;
+  }
+  .rules-list li{
+    counter-increment:rule;
+    position:relative;
+    padding:20px 24px 20px 64px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:14px;
+    margin-bottom:12px;
+    font-size:15px;
+    line-height:1.7;
+    transition:border-color .3s;
+  }
+  .rules-list li:hover{border-color:var(--accent)}
+  .rules-list li::before{
+    content:counter(rule,decimal-leading-zero);
+    position:absolute;left:22px;top:20px;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:16px;font-weight:700;
+    color:var(--accent);
+  }
+
+  /* ── crew ── */
+  .crew-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:16px;
+  }
+  .crew-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:32px 28px;
+    display:flex;flex-direction:column;align-items:center;
+    text-align:center;
+    transition:border-color .3s,transform .3s;
+  }
+  .crew-card:hover{
+    border-color:var(--accent);
+    transform:translateY(-4px);
+  }
+  .crew-role{
+    font-size:12px;font-weight:700;
+    color:var(--accent);
+    letter-spacing:2px;
+    margin-bottom:8px;
+  }
+  .crew-name{
+    font-size:20px;font-weight:800;
+    margin-bottom:4px;
+  }
+  .crew-gen{
+    font-size:13px;color:var(--text-dim);
+    margin-bottom:14px;
+  }
+  .crew-contact{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:14px;
+    color:var(--lime);
+    letter-spacing:.5px;
+  }
+
+  /* ── location ── */
+  .location-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:16px;
+  }
+  .location-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:32px 24px;
+    text-align:center;
+    transition:border-color .3s,transform .3s;
+  }
+  .location-card:hover{
+    border-color:var(--lime);
+    transform:translateY(-4px);
+  }
+  .location-icon{
+    font-size:36px;
+    margin-bottom:16px;
+    display:block;
+  }
+  .location-name{
+    font-size:17px;font-weight:700;
+    margin-bottom:6px;
+  }
+  .location-desc{
+    font-size:13px;color:var(--text-dim);
+    line-height:1.7;
+  }
+
+  /* ── goals ── */
+  .goals-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:16px;
+  }
+  .goal-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:32px 24px;
+    text-align:center;
+    transition:border-color .3s,transform .3s;
+  }
+  .goal-card:hover{
+    border-color:var(--lime);
+    transform:translateY(-4px);
+  }
+  .goal-icon{
+    font-size:36px;
+    margin-bottom:16px;
+    display:block;
+  }
+  .goal-title{
+    font-size:16px;font-weight:700;
+    margin-bottom:8px;
+  }
+  .goal-desc{
+    font-size:13px;color:var(--text-dim);
+    line-height:1.7;
+  }
+
+  /* ── footer ── */
+  footer{
+    text-align:center;
+    padding:60px 24px;
+    border-top:1px solid var(--border);
+  }
+  footer p{font-size:13px;color:var(--text-dim)}
+  footer .foot-logo{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:24px;font-weight:700;
+    margin-bottom:8px;
+  }
+  footer .foot-logo span{color:var(--accent)}
+
+  /* ── divider ── */
+  .divider{
+    width:48px;height:3px;
+    background:linear-gradient(90deg,var(--accent),var(--lime));
+    border-radius:2px;
+    margin:0 auto 48px;
+  }
+
+  /* ── animations ── */
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(24px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  @keyframes bounce{
+    0%,100%{transform:translateX(-50%) translateY(0)}
+    50%{transform:translateX(-50%) translateY(6px)}
+  }
+
+  .reveal{
+    opacity:0;transform:translateY(30px);
+    transition:opacity .7s ease,transform .7s ease;
+  }
+  .reveal.visible{opacity:1;transform:translateY(0)}
+
+  /* ── responsive ── */
+  @media(max-width:600px){
+    section{padding:56px 18px}
+    .schedule-grid{grid-template-columns:1fr}
+    .month-grid{grid-template-columns:repeat(2,1fr)}
+    .goals-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-badge">N-CEO RUNNING CREW</div>
+  <h1><span>엔진런</span></h1>
+  <p class="hero-sub">엔쇼에 진심인 사람들의 러닝 크루</p>
+  <div class="hero-meaning">
+    <strong>엔진</strong> = <strong>엔</strong>쇼에 <strong>진</strong>심 &nbsp;+&nbsp; <span style="color:var(--accent);font-weight:700">Engine</span><br>
+    학회 안에서 함께 뛰며 몸도, 관계도, 에너지도 깨우는<br>소규모 러닝 모임입니다.
+  </div>
+  <div class="scroll-hint">SCROLL</div>
+</section>
+
+<!-- ═══ SCHEDULE ═══ -->
+<section>
+  <div class="container reveal">
+    <div class="section-label">SCHEDULE</div>
+    <h2 class="section-title">정기 러닝 <em>스케줄</em></h2>
+
+    <div class="schedule-grid">
+      <div class="schedule-card">
+        <div class="schedule-day">SATURDAY</div>
+        <div class="schedule-time">토 13:00</div>
+        <div class="schedule-desc">
+          토요일 오후 정기 러닝<br>
+          매주 고정, 함께 뛰는 시간
+        </div>
+        <span class="schedule-tag">정기 런</span>
+      </div>
+      <div class="schedule-card">
+        <div class="schedule-day">WEEKDAY + SUNDAY</div>
+        <div class="schedule-time">평일 + 일요일 수시</div>
+        <div class="schedule-desc">
+          비공식 자유 모임<br>
+          누구든 톡 한마디로 소집
+        </div>
+        <span class="schedule-tag">비공식 런</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FLOW ═══ -->
+<section style="background:var(--surface)">
+  <div class="container reveal">
+    <div class="section-label">ACTIVITY</div>
+    <h2 class="section-title">러닝 데이 <em>진행 흐름</em></h2>
+
+    <div class="flow-list">
+      <div class="flow-item">
+        <div class="flow-title">집결 & 출석</div>
+        <div class="flow-desc">
+          약속 장소 집결 후 간단한 컨디션 체크. 오늘의 코스와 페이스 안내.
+        </div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-title">웜업 & 동적 스트레칭</div>
+        <div class="flow-desc">
+          관절 가동성 운동, 동적 스트레칭으로 부상 예방.
+          가볍게 조깅하며 몸을 깨움.
+        </div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-title">메인 러닝</div>
+        <div class="flow-desc">
+          그룹별 페이스에 맞춰 러닝 진행.
+        </div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-title">쿨다운 & 정적 스트레칭</div>
+        <div class="flow-desc">
+          심박수 안정화를 위한 워킹 후 근육별 정적 스트레칭.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ LOCATION ═══ -->
+<section>
+  <div class="container reveal">
+    <div class="section-label">LOCATION</div>
+    <h2 class="section-title">러닝 <em>장소</em></h2>
+
+    <div class="location-grid">
+      <div class="location-card">
+        <span class="location-icon">&#x1F3DF;</span>
+        <div class="location-name">서울대학교 대운동장</div>
+        <div class="location-desc">캠퍼스 내 트랙 러닝에 최적화된 공간</div>
+      </div>
+      <div class="location-card">
+        <span class="location-icon">&#x1F333;</span>
+        <div class="location-name">도림천</div>
+        <div class="location-desc">자연 속 평탄한 산책로를 따라 달리는 코스</div>
+      </div>
+      <div class="location-card">
+        <span class="location-icon">&#x1F30A;</span>
+        <div class="location-name">한강</div>
+        <div class="location-desc">탁 트인 한강변을 따라 달리는 롱런 코스</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GOALS ═══ -->
+<section>
+  <div class="container reveal">
+    <div class="section-label">WHY RUN</div>
+    <h2 class="section-title">엔진런이 <em>주는 것</em></h2>
+
+    <div class="goals-grid">
+      <div class="goal-card">
+        <span class="goal-icon">&#x1F3C3;</span>
+        <div class="goal-title">체력 향상</div>
+        <div class="goal-desc">꾸준한 러닝으로 기초 체력과 심폐 지구력을 키웁니다.</div>
+      </div>
+      <div class="goal-card">
+        <span class="goal-icon">&#x1F91D;</span>
+        <div class="goal-title">엔쇼 유대감</div>
+        <div class="goal-desc">러닝이라는 공통 경험으로 엔쇼 멤버 간 더 깊은 관계를 만듭니다.</div>
+      </div>
+      <div class="goal-card">
+        <span class="goal-icon">&#x1F9E0;</span>
+        <div class="goal-title">멘탈 리프레시</div>
+        <div class="goal-desc">학업과 프로젝트에 지친 머리를 러닝으로 환기합니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CREW ═══ -->
+<section style="background:var(--surface)">
+  <div class="container reveal">
+    <div class="section-label">CREW</div>
+    <h2 class="section-title">운영진 <em>소개</em></h2>
+
+    <div class="crew-grid">
+      <div class="crew-card">
+        <div class="crew-role">CAPTAIN</div>
+        <div class="crew-name">손형준</div>
+        <div class="crew-gen">52기</div>
+        <div class="crew-contact">010-2607-3813</div>
+      </div>
+      <div class="crew-card">
+        <div class="crew-role">MANAGER</div>
+        <div class="crew-name">김재원</div>
+        <div class="crew-gen">52기</div>
+        <div class="crew-contact">010-3396-0663</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="foot-logo">ENGINE<span>RUN</span></div>
+  <p>엔쇼에 진심인 사람들의 러닝 &middot; 2026</p>
+</footer>
+
+<script>
+  // scroll reveal
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
